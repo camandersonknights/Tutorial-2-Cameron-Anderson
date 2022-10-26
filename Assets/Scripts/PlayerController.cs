@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     public AudioClip musicClipOne;
     public AudioClip musicClipTwo;
     public AudioSource musicSource;
+    public AudioSource songTwo;
+    public int tP;
+    public int songValue;
     Animator anim;
     // Start is called before the first frame update
     void Start()
@@ -30,6 +33,8 @@ public class PlayerController : MonoBehaviour
         musicSource.Play();
         musicSource.loop = true;
         anim = GetComponent<Animator>();
+        tP = 0;
+        songValue = 0;
     }
 
     // Update is called once per frame
@@ -38,14 +43,6 @@ public class PlayerController : MonoBehaviour
         float hozMovement = Input.GetAxis("Horizontal");
         float vertMovement = Input.GetAxis("Vertical");
         rd2d.AddForce(new Vector2(hozMovement * speed, vertMovement * speed));
-        if (scoreValue == 4)
-        {
-            LivesValue = 3;
-            Lives.text = "Lives: " + LivesValue.ToString();
-            transform.position = new Vector2(0.0f, 0.0f);
-            musicSource.clip = musicClipTwo;
-            musicSource.Play();
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -79,6 +76,13 @@ public class PlayerController : MonoBehaviour
         if(scoreValue >= 8)
         {
             WinTextObject.SetActive(true);
+            songValue = songValue + 1;
+        }
+        if(songValue == 1)
+        {
+            songTwo.clip = musicClipTwo;
+            musicSource.Stop();
+            songTwo.Play();
         }
         if(LivesValue == 0)
         {
@@ -103,6 +107,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.A))
         {
           anim.SetInteger("State", 0);
+        }
+        if(scoreValue == 4)
+        {
+            tP = tP + 1;
+        }
+        if(tP == 1)
+        {
+            tP = tP + 1;
+            transform.position = new Vector2(50.0f, 0.0f);
+            LivesValue = 3;
+            Lives.text = "Lives: " + LivesValue.ToString();
         }
     }
 }
